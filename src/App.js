@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     // Check backend connection status
-    fetch("/predict")
+    fetch("/")
       .then(() => setBackendStatus("Connected"))
       .catch(() => setBackendStatus("Disconnected"));
   }, []);
@@ -16,8 +16,8 @@ function App() {
     const newText = event.target.value;
     setText(newText);
 
-    // Send text to the C service
-    fetch("/predict", {
+    // Send text to the backend for prediction
+    fetch("http://127.0.0.1:8000/predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -26,7 +26,8 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        setPredictedText(data.predictedText);
+        const predictedText = data.predictedText;
+        setPredictedText(predictedText);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -34,19 +35,20 @@ function App() {
   };
 
   return (
-    <div>
-      <h1>Predictive Text App</h1>
-      <div>
+    <div className="container">
+      <h1 className="title">Predictive Text App</h1>
+      <div className="status">
         <strong>Backend Status:</strong> {backendStatus}
       </div>
       <textarea
+        className="input"
         value={text}
         onChange={handleInputChange}
         rows="5"
         cols="50"
       ></textarea>
       <br />
-      <div>
+      <div className="predicted-text">
         <h2>Predicted Text:</h2>
         <p>{predictedText}</p>
       </div>
