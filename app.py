@@ -14,9 +14,10 @@ def predict():
     data = request.get_json()
     text = data['text']
 
-    # Perform predictive text completion using your C implementation
+    # Perform predictive text completion using python implementation
 
     # Dummy example: Appending ' world' to the input text
+    
     predicted_text = text + ' world'
 
     return jsonify({'predictedText': predicted_text})
