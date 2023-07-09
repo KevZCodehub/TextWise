@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from transformers import GPT2LMTokenizer, GPT2LMHeadModel
+from transformers import GPT2TokenizerFast, GPT2LMHeadModel
 
 app = Flask(__name__)
 CORS(app)
 
 # Load pre-trained GPT-2 model and tokenizer
-tokenizer = GPT2LMTokenizer.from_pretrained('gpt2')
+tokenizer = GPT2TokenizerFast.from_pretrained('gpt2')
 model = GPT2LMHeadModel.from_pretrained('gpt2')
 
 @app.route('/', methods=['GET'])
