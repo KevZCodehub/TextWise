@@ -15,14 +15,35 @@ function App() {
   const handleInputChange = (event) => {
     const newText = event.target.value;
     setText(newText);
+  };
 
-    // Send text to the backend for prediction
-    fetch("http://127.0.0.1:8000/predict", {
+  const handleNextWordPrediction = () => {
+    // Send text to the backend for next word prediction
+    fetch("http://127.0.0.1:8000/next-word-predict", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ text: newText }),
+      body: JSON.stringify({ text: text }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const predictedText = data.predictedText;
+        setPredictedText(predictedText);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleNextSentencePrediction = () => {
+    // Send text to the backend for next sentence prediction
+    fetch("http://127.0.0.1:8000/next-sentence-predict", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ text: text }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -47,6 +68,9 @@ function App() {
         rows="5"
         cols="50"
       ></textarea>
+      <br />
+      <button onClick={handleNextWordPrediction}>Next Word Prediction</button>
+      <button onClick={handleNextSentencePrediction}>Next Sentence Prediction</button>
       <br />
       <div className="predicted-text">
         <h2>Predicted Text:</h2>
